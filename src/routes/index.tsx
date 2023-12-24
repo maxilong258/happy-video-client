@@ -10,6 +10,8 @@ import { Following } from '@/views/Following'
 import { Followers } from '@/views/Followers'
 import { Collection } from '@/views/Collection'
 import { SearchResult } from '@/views/SearchResult'
+import { AuthPage } from '@/views/UnAuthenticatedApp/AuthPage'
+import { MyAiTestPage } from '@/views/MyAiTest'
 
 export const routes = [
   {
@@ -84,7 +86,18 @@ export const routes = [
         element: <Collection />,
         routeName: 'collection'
       },
+      {
+        path: 'MyAI',
+        name: 'MyAI',
+        element: <MyAiTestPage />,
+        routeName: 'MyAiTestPage'
+      },
     ]
   },
+  {
+    path: '/auth',
+    element: <AuthPage />,
+    name: 'auth',
+  }
   
 ]

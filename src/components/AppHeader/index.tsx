@@ -1,10 +1,9 @@
 import styled from '@emotion/styled'
 import { UserPanel } from '../UserPanel'
-import { ReactElement } from 'react'
 import { Link } from 'react-router-dom'
 import { SearchPanel } from '../SearchPanel/SearchPanel'
 
-export const AppHeader = ({ options }: { options: ReactElement[] }) => {
+export const AppHeader = ({ page }: { page: string }) => {
   return (
     <Header>
       <MainPanel>
@@ -13,7 +12,7 @@ export const AppHeader = ({ options }: { options: ReactElement[] }) => {
         </Link>
       </MainPanel>
       <SearchPanel />
-      <UserPanel options={options} />
+      <UserPanel page={page} />
     </Header>
   )
 }

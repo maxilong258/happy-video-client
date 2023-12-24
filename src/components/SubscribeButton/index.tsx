@@ -59,11 +59,11 @@ export const SubscribeButton = ({
       disabled={!followStatus}
     >
       <Button
-        style={followStatus ? { border: '1px solid #2afc0080' } : {}}
+        style={followStatus ? { background: '#2afc0080' } : {}}
         shape="round"
         onClick={followStatus ? undefined : handleSubscribe}
+        icon={<BellOutlined />}
       >
-        <BellOutlined />
         {followStatus ? 'Subscribed' : 'Subscribe'}
       </Button>
     </Popconfirm>

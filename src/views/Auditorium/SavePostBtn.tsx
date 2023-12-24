@@ -1,3 +1,5 @@
+import { useAuth } from '@/context/auth-context'
+import { FetchRes } from '@/types/fetch-res'
 import { Post } from '@/types/post'
 import { optimisticUpdate } from '@/utils/optimistic-update'
 import { useAsync } from '@/utils/use-async'
@@ -14,9 +16,14 @@ export const SavePostBtn = ({
 }) => {
   const client = useHttp()
   const { run: savePost } = useAsync<FetchRes<Post>>()
+  const { user } = useAuth()
 
   const handleSave = async (postId: number) => {
     if (!postInfoRes) return
+    if (!user) {
+      message.info('Please Login First')
+      return
+    }
     const [newTemp, reset] = optimisticUpdate(postInfoRes, (temp) => {
       temp.data.isSaved = !temp.data.isSaved
       return temp
@@ -44,7 +51,7 @@ export const SavePostBtn = ({
       cancelText="No"
     >
       <Button
-        style={postInfo?.isSaved ? { border: '1px solid #2afc0080' } : {}}
+        style={postInfo?.isSaved ? { background: '#2afc0080' } : {}}
         onClick={
           postInfo.isSaved
             ? undefined
@@ -53,8 +60,8 @@ export const SavePostBtn = ({
               }
         }
         shape="round"
+        icon={<VerticalAlignBottomOutlined />}
       >
-        <VerticalAlignBottomOutlined />
         {postInfo?.isSaved ? 'Saved' : 'Save'}
       </Button>
     </Popconfirm>

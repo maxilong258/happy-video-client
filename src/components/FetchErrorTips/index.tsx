@@ -18,7 +18,7 @@ export const FetchErrorTips = (error: any) => {
   const openNotification = (error: any) => {
     api.error({
       message: error.statusCode,
-      description: error.message
+      description: <>{error.message}<br />{error.data?.message}</>
     })
   }
 

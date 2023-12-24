@@ -60,6 +60,10 @@ export const Comments = ({ postId }: { postId: number }) => {
 
   const handleClickLike = (commentId: number) => {
     return async () => {
+      if (!user) {
+        message.info('Please Login first')
+        return
+      }
       const [newTemp, reset] = optimisticUpdate(commentsInfo, (temp) => {
         const data = temp.data.map((item) => {
           if (item.id === commentId) {
@@ -82,7 +86,7 @@ export const Comments = ({ postId }: { postId: number }) => {
   }
 
   const getComments = async (isAfterAddComment?: boolean) => {
-    if (!commentsInfo.hasMore) return
+    if (!isAfterAddComment && !commentsInfo.hasMore) return
     const res = await fetchComments(
       client(`comments/post/${postId}`, {
         data: {
@@ -138,10 +142,11 @@ export const Comments = ({ postId }: { postId: number }) => {
 
       <div style={{ height: '100px', marginTop: '28px' }}>
         <TextArea
+          disabled={!user}
           rows={3}
           value={comment}
           onChange={(e) => setComment(e.target.value)}
-          placeholder="Please enter your comment"
+          placeholder={!user ? "Login to leave your comment" : "Please enter your comment" }
         ></TextArea>
         <Button
           style={{ marginTop: '8px', float: 'right' }}
@@ -162,7 +167,7 @@ const CommentCard = ({
   handleClickLike
 }: {
   comment: Comment
-  handleClickLike: (commentId: number) => () => void
+  handleClickLike: (commentId: number) => () => Promise<boolean | undefined>
 }) => {
   return (
     <div style={{ marginBottom: '20px' }}>

@@ -15,6 +15,7 @@ export const login = async (data: { email: string; password: string }) => {
     method: 'POST',
     data
   })
+  if (!res.success) return
   return handleUserResponse(res.data)
 }
 
@@ -27,6 +28,7 @@ export const register = async (data: {
     method: 'POST',
     data
   })
+  if (!res.success) return
   return handleUserResponse(res.data)
 }
 

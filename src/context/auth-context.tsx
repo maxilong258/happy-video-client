@@ -24,8 +24,8 @@ const bootstrapUser = async () => {
 
 const AuthContext = React.createContext<{
   user: User | null
-  register: (form: AuthForm) => Promise<void>
-  login: (form: AuthForm) => Promise<void>
+  register: (form: AuthForm) => Promise<User | undefined>
+  login: (form: AuthForm) => Promise<User | undefined>
   logout: () => Promise<void>
 } | undefined>(undefined)
 AuthContext.displayName = 'AuthContext'
@@ -34,8 +34,8 @@ export const AuthProvider = ({children}: {children: ReactNode}) => {
 
   const {data: user, error, isLoading, isIdle, isError, run, setData: setUser} = useAsync<User | null>()
 
-  const login = (form: AuthForm) => auth.login(form).then(setUser)
-  const register = (form: AuthForm) => auth.register(form).then(setUser)
+  const login = (form: AuthForm) => auth.login(form).then((user) => {setUser(user ?? null); return user})
+  const register = (form: AuthForm) => auth.register(form).then((user) => {setUser(user ?? null); return user})
   const logout = () => auth.logout().then(() => {
     setUser(null)
   })

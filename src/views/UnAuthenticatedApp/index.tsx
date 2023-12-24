@@ -2,15 +2,15 @@ import { useState } from 'react'
 import { Login } from './Login'
 import { Register } from './Register'
 
-export const UnAuthenticatedApp = () => {
+export const UnAuthenticatedApp = ({isNeedRedirectToHome = false} : {isNeedRedirectToHome?: boolean}) => {
   const [isRegister, setIsRegister] = useState(false)
   return (
     <>
       {isRegister}
       {isRegister ? (
-        <Register setIsRegister={setIsRegister} />
+        <Register setIsRegister={setIsRegister} isNeedRedirectToHome={isNeedRedirectToHome} />
       ) : (
-        <Login setIsRegister={setIsRegister} />
+        <Login setIsRegister={setIsRegister} isNeedRedirectToHome={isNeedRedirectToHome} />
       )}
     </>
   )

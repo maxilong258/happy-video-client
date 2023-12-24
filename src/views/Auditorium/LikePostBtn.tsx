@@ -1,3 +1,4 @@
+import { useAuth } from "@/context/auth-context"
 import { FetchRes } from "@/types/fetch-res"
 import { Post } from "@/types/post"
 import { optimisticUpdate } from "@/utils/optimistic-update"
@@ -15,11 +16,16 @@ export const LikePostButton = ({
 }) => {
   const client = useHttp()
   const { run: addPostLikes } = useAsync<FetchRes<Post>>()
+  const {user} = useAuth()
 
   const postInfo = postInfoRes?.data
 
   const handleLike = async () => {
     if (!postInfoRes) return
+    if (!user) {
+      message.info('Please Login First')
+      return
+    }
     const [newTemp, reset] = optimisticUpdate(postInfoRes, (temp) => {
       temp.data.isLiked = !temp.data.isLiked
       temp.data.likes += temp.data.isLiked ? 1 : -1
@@ -37,11 +43,11 @@ export const LikePostButton = ({
 
   return (
     <Button
-      style={postInfo.isLiked ? { border: '1px solid #2afc0080' } : {}}
+      style={postInfo.isLiked ? { background: '#2afc0080' } : {}}
       shape="round"
       onClick={handleLike}
+      icon={<LikeOutlined />}
     >
-      <LikeOutlined />
       {postInfo?.isLiked ? 'Liked' : 'Like'}
     </Button>
   )

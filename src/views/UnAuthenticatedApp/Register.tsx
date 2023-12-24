@@ -1,19 +1,27 @@
 import { Button, Card, Form, Input } from 'antd'
 import { Container } from '@/components/LoginFormContainer'
 import { useAuth } from '@/context/auth-context'
+import { useNavigate } from 'react-router'
+import { ArrowLeftOutlined } from '@ant-design/icons'
 
 export const Register = ({
-  setIsRegister
+  setIsRegister,
+  isNeedRedirectToHome
 }: {
   setIsRegister: (type: boolean) => void
+  isNeedRedirectToHome: boolean
 }) => {
   const { register } = useAuth()
-  const submit = (value: {
+  const navigate = useNavigate()
+  const submit = async (value: {
     username: string
     password: string
     email: string
   }) => {
-    register({ ...value })
+    const user = await register({ ...value })
+    if (isNeedRedirectToHome && user) {
+      navigate('/')
+    }
   }
 
   const rules = {
@@ -36,32 +44,46 @@ export const Register = ({
 
   return (
     <Container>
-      <Card title={'注册'}>
+      <Card
+        title={
+          <>
+            <Button
+              type="link"
+              onClick={() => {
+                navigate('/')
+              }}
+            >
+              <ArrowLeftOutlined />
+            </Button>
+            Register
+          </>
+        }
+      >
         <Form onFinish={submit}>
           <Form.Item name={'username'} rules={rules.username}>
-            <Input placeholder={'用户名'} type={'text'} id={'username'} />
+            <Input placeholder={'Username'} type={'text'} id={'username'} />
           </Form.Item>
           <Form.Item name={'email'} rules={rules.email}>
-            <Input placeholder={'邮箱'} type={'text'} id={'email'} />
+            <Input placeholder={'Email'} type={'text'} id={'email'} />
           </Form.Item>
           <Form.Item name={'password'} rules={rules.password}>
-            <Input placeholder={'密码'} type={'text'} id={'password'} />
+            <Input placeholder={'Password'} type={'text'} id={'password'} />
           </Form.Item>
           <Form.Item name={'confirmPassword'} rules={rules.confirmPassword}>
             <Input
-              placeholder={'确认密码'}
+              placeholder={'Confirm Password'}
               type={'text'}
               id={'confirmPassword'}
             />
           </Form.Item>
           <Form.Item>
             <Button block htmlType={'submit'} type={'primary'}>
-              注册
+              Register
             </Button>
           </Form.Item>
           <Form.Item>
             <Button block type={'primary'} onClick={() => setIsRegister(false)}>
-              已有账号？去登录
+              Already have a account, go login
             </Button>
           </Form.Item>
         </Form>

@@ -26,7 +26,7 @@ export const StudioLayout = () => {
         <UnAuthenticatedApp />
       ) : (
         <>
-        <AppHeader options={[<Link to={'/'}>main site</Link>]} />
+        <AppHeader page={'studio'} />
           <div style={{display: 'flex'}}>
             <Aside>
               <Menu
